@@ -1,0 +1,8 @@
+.floating-elements {
+  background-color: yellow;
+  color: black;
+  border-radius: 2rem;
+  position: absolute;
+  padding: 10px 15px;
+  cursor: pointer;
+}

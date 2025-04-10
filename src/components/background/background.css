@@ -1,0 +1,8 @@
+.background {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  background-color: red;
+  color: white;
+  position: relative;
+}
