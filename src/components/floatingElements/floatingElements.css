@@ -1,5 +1,6 @@
 .floating-wrapper {
   position: absolute;
+  z-index: 20;
 }
 
 .floating-elements {

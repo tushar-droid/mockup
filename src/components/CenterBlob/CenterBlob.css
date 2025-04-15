@@ -1,0 +1,133 @@
+/* .centerblob {
+  background-color: red;
+  color: white;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  width: 300px;
+} */
+
+.blob-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  outline: solid white;
+  height: 500px;
+  width: 480px;
+}
+
+.blob {
+  background-image: linear-gradient(120deg, #34e0f0 0%, #b400ff 100%);
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  width: 500px;
+  height: 480px;
+  animation: morph 3s linear infinite;
+  transform-style: preserve-3d;
+  outline: 1px solid transparent;
+  will-change: border-radius;
+  display: flex;
+  filter: blur(4px);
+}
+.blob:before,
+.blob:after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+  box-shadow: 5px 5px 89px rgba(0, 102, 255, 0.21);
+  will-change: border-radius, transform, opacity;
+  animation-delay: 200ms;
+  background-image: linear-gradient(
+    120deg,
+    rgba(0, 67, 255, 0.55) 0%,
+    rgba(0, 103, 255, 0.89) 100%
+  );
+}
+
+.blob:before {
+  animation: morph 3s linear infinite;
+  opacity: 0.21;
+  animation-duration: 1.5s;
+}
+
+.blob:after {
+  animation: morph 3s linear infinite;
+  animation-delay: 400ms;
+  opacity: 0.89;
+  line-height: 120px;
+  text-indent: -21px;
+}
+
+@keyframes morph {
+  0%,
+  100% {
+    border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+    transform: translate3d(0, 0, 0) rotateZ(0.01deg);
+  }
+  34% {
+    border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%;
+    transform: translate3d(0, 5px, 0) rotateZ(0.01deg);
+  }
+  50% {
+    opacity: 0.89;
+    transform: translate3d(0, 0, 0) rotateZ(0.01deg);
+  }
+  67% {
+    border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
+    transform: translate3d(0, -3px, 0) rotateZ(0.01deg);
+  }
+}
+
+@keyframes fadeIn {
+  100% {
+    transform: scale(1.03);
+    opacity: 0;
+  }
+}
+
+.blob-grid {
+  position: absolute;
+  height: 600px;
+  width: 600px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.blob-grid > * {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.grid-val {
+  background-image: linear-gradient(
+    120deg,
+    rgba(0, 67, 255, 0.55) 0%,
+    rgba(0, 103, 255, 0.89) 100%
+  );
+  height: 35%;
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  animation: morph 5s linear infinite;
+  filter: blur(0);
+  font-size: medium;
+}
+.grid-val::before,
+.grid-val::after {
+  content: none;
+}

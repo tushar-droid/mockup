@@ -2,8 +2,9 @@ import "./background.css";
 import { DndContext } from "@dnd-kit/core";
 import { useDroppable } from "@dnd-kit/core";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState, useLayoutEffect } from "react";
 import FloatingElements from "../floatingElements/FloatingElements";
+import CenterBlob from "../CenterBlob/CenterBlob";
 
 const Background = () => {
   const items = [
@@ -27,12 +28,31 @@ const Background = () => {
   // Track refs for each draggable element
   const itemRefs = useRef({});
   const positionRef = useRef({ left: 0, top: 0 });
-
+  const blobContainer = useRef(null);
+  const [testPositions, setTestPositions] = useState(null);
   const { setNodeRef } = useDroppable({
     id: "background",
   });
 
+  useLayoutEffect(() => {
+    console.log("Layout affect ran");
+
+    const test = () => {
+      return items.reduce((acc, item) => {
+        const maxLeft = window.innerWidth - 100;
+        const maxTop = window.innerHeight - 100;
+        acc[item] = {
+          left: Math.random() * maxLeft,
+          top: Math.random() * maxTop,
+        };
+        return acc;
+      }, {});
+    };
+    setTestPositions(test);
+  }, []);
+
   const randomPositions = useMemo(() => {
+    //Returns an object with items as keys and all values are also objects with left and right as keys and random left and right positions as values
     return items.reduce((acc, item) => {
       const maxLeft = window.innerWidth - 100;
       const maxTop = window.innerHeight - 100;
@@ -58,6 +78,7 @@ const Background = () => {
   const handleDragEnd = (ev) => {
     const id = ev.active.id;
     const el = itemRefs.current[id];
+
     if (el) {
       const delta = ev.delta;
 
@@ -74,26 +95,33 @@ const Background = () => {
   };
 
   return (
-    <DndContext
-      onDragEnd={handleDragEnd}
-      onDragStart={handleDragStart}
-      modifiers={[restrictToParentElement]}
-    >
-      <div className="background" id="background" ref={setNodeRef}>
-        {items.map((item) => (
-          <FloatingElements
-            key={item}
-            itemName={item}
-            innerRef={(el) => {
-              itemRefs.current[item] = el;
-            }}
-            initialLeft={randomPositions[item].left}
-            initialTop={randomPositions[item].top}
-            id={item}
-          />
-        ))}
-      </div>
-    </DndContext>
+    <>
+      <DndContext
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+        modifiers={[restrictToParentElement]}
+      >
+        <CenterBlob blobContainer={blobContainer} />
+        <div className="background" id="background" ref={setNodeRef}>
+          {testPositions &&
+            items.map((item) => (
+              <FloatingElements
+                key={item}
+                itemName={item}
+                innerRef={(el) => {
+                  itemRefs.current[item] = el;
+                  console.log(testPositions);
+                }}
+                // initialLeft={randomPositions[item].left}
+                // initialTop={randomPositions[item].top}
+                initialLeft={testPositions[item].left}
+                initialTop={testPositions[item].top}
+                id={item}
+              />
+            ))}
+        </div>
+      </DndContext>
+    </>
   );
 };
 
