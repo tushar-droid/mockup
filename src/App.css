@@ -1,3 +1,11 @@
+html,
+body,
+#root,
+.background,
+* {
+  /* cursor: pointer !important; */
+  cursor: url("../src/assets/arrowhead.png"), auto;
+}
 #root {
   height: 100vh;
   width: 100vw;
